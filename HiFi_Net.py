@@ -9,6 +9,7 @@ from models.seg_hrnet_config import get_cfg_defaults
 from models.NLCDetection_api import NLCDetection
 from PIL import Image
 
+import os
 import torch
 import torch.nn as nn
 import numpy as np
@@ -31,8 +32,9 @@ class HiFi_Net():
         FENet  = nn.DataParallel(FENet)
         SegNet = nn.DataParallel(SegNet)
 
-        self.FENet  = restore_weight_helper(FENet,  "weights/HRNet",  750001)
-        self.SegNet = restore_weight_helper(SegNet, "weights/NLCDetection", 750001)
+        self.config = get_config()
+        self.FENet  = restore_weight_helper(FENet,  os.path.join(self.config.hifi_models_path, "HRNet"),  750001)
+        self.SegNet = restore_weight_helper(SegNet, os.path.join(self.config.hifi_models_path, "NLCDetection"), 750001)
         self.FENet.eval()
         self.SegNet.eval()
 
@@ -116,5 +118,7 @@ def inference(img_path):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument('--img_path', type=str, default='asset/sample_1.jpg')
+    parser.add_argument('--config', type=str, default='./config.yml')
     args = parser.parse_args()
+    get_config(args.config)
     inference(args.img_path)

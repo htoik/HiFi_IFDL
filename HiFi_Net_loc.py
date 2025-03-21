@@ -140,14 +140,15 @@ def Inference_loc(
 def main(args):
     ## Set up the configuration.
     args, writer, FENet, SegNet, FENet_dir, SegNet_dir = config(args)
+    weight_dir = get_config().hifi_models_path
 
     ## load FENet and SegNet weight:
     if args.loss_type == 'ce':
-        FENet  = restore_weight_helper(FENet,  "weights/HRNet",  225000)
-        SegNet = restore_weight_helper(SegNet, "weights/NLCDetection", 225000)    
+        FENet  = restore_weight_helper(FENet,  os.path.join(weight_dir, "HRNet"),  225000)
+        SegNet = restore_weight_helper(SegNet, os.path.join(weight_dir, "NLCDetection"), 225000)    
     elif args.loss_type == 'dm':
-        FENet  = restore_weight_helper(FENet,  "weights/HRNet",  315000)
-        SegNet = restore_weight_helper(SegNet, "weights/NLCDetection", 315000)
+        FENet  = restore_weight_helper(FENet,  os.path.join(weight_dir, "HRNet"),  315000)
+        SegNet = restore_weight_helper(SegNet, os.path.join(weight_dir, "NLCDetection"), 315000)
     else:
         raise ValueError
 

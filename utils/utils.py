@@ -175,6 +175,7 @@ def restore_weight_helper(model, model_dir, initial_epoch):
 def restore_optimizer(optimizer, model_dir):
     '''restore the optimizer.'''
     try:
+        # Hello? Where is initial_epoch coming from?
         weight_path = '{}/{}.pth'.format(model_dir, initial_epoch)
         state_dict = torch.load(weight_path, map_location='cuda:0')
         print('Optimizer weight-loading succeeds.')

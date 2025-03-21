@@ -1,0 +1,2 @@
+data_path: ./data_dir
+hifi_models_path: ./models
