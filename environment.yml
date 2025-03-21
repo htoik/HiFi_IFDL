@@ -133,4 +133,5 @@ dependencies:
       - einops==0.6.1
       - kmeans-pytorch==0.3
       - opencv-python==4.8.1.78
+      - PyYAML
 prefix: /home/aya/.conda/envs/HiFi_Net

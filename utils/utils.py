@@ -9,6 +9,7 @@ import torch.nn as nn
 import numpy as np
 import torch.nn.functional as F
 import matplotlib.pyplot as plt
+import yaml
 
 from torch.optim.lr_scheduler import ReduceLROnPlateau
 from kmeans_pytorch import kmeans
@@ -283,3 +284,19 @@ def train_log_dump(args, seg_correct, seg_total, map_loss_sum, mani_lss_sum, nat
     tb_writer_display(writer, iter_num, lr_scheduler, epoch, seg_accu, 
                       loc_map_loss, manipul_loss, natural_loss, binary_loss,
                       loss_1, loss_2, loss_3, loss_4)
+
+def static_vars(**kwargs):
+    def decorate(func):
+        for k in kwargs:
+            setattr(func, k, kwargs[k])
+        return func
+    return decorate
+
+@static_vars(config_data=None)
+def get_config(config_filepath=None):
+    if get_config.config_data is None:
+        if config_filepath is None:
+            raise RuntimeError("First call to `get_config` requires config filepath.")
+        with open(config_filepath, 'r') as f:
+            get_config.config_data = yaml.safe_load(f)
+    return get_config.config_data
